@@ -193,6 +193,12 @@ function goBack() {
         const previousPageId = pageHistory.pop();
         showPage(previousPageId);
         currentPageId = previousPageId;
+
+        // If we just returned to the main page (history is now empty), show the icon panel.
+        if (pageHistory.length === 0) {
+            iconPanel.style.display = 'flex';
+            iconPanel.setAttribute('aria-hidden', 'false');
+        }
     }
 }
 
@@ -740,22 +746,20 @@ function initPageViews() {
 
 // --- EVENT LISTENERS ---
 
-// A new event listener for the bookToggle button
 bookToggle.addEventListener('click', () => {
-    // If the icon panel is open, close it
-    if (iconPanel.style.display === 'flex') {
-        iconPanel.style.display = 'none';
-        iconPanel.setAttribute('aria-hidden', 'true');
-    } 
-    // If we have a page to go back to, go back
-    else if (pageHistory.length > 0) {
+    // If we're on a sub-page, go back one step in the history.
+    if (pageHistory.length > 0) {
         goBack();
     }
-    // Otherwise, show the main journal page and the icon panel
+    // If we're on the main page, clicking the book button should toggle the icon panel.
     else {
-        navigateTo('journal-main');
-        iconPanel.style.display = 'flex';
-        iconPanel.setAttribute('aria-hidden', 'false');
+        if (iconPanel.style.display === 'flex') {
+            iconPanel.style.display = 'none';
+            iconPanel.setAttribute('aria-hidden', 'true');
+        } else {
+            iconPanel.style.display = 'flex';
+            iconPanel.setAttribute('aria-hidden', 'false');
+        }
     }
 });
 
