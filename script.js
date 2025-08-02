@@ -50,7 +50,7 @@ const todoContainer = document.getElementById('todo-container');
 const studyDashboard = document.getElementById('study-dashboard');
 const pomodoroIcon = document.getElementById('pomodoroIcon');
 const blurtingIcon = document.getElementById('blurtingIcon');
-const uploadIcon = document.getElementById('tutorIcon'); // Corrected from `uploadIcon` to `tutorIcon`
+const tutorIcon = document.getElementById('tutorIcon');
 const calendarIcon = document.getElementById('calendarIcon');
 const coursesIcon = document.getElementById('coursesIcon');
 
@@ -123,7 +123,6 @@ const calcButtons = [
     "C"
 ];
 
-const tutorIcon = document.getElementById('tutorIcon');
 const tutorContainer = document.getElementById('tutor-container');
 const fileInput = document.getElementById('file-input');
 const courseSelect = document.getElementById('course-select');
@@ -153,19 +152,32 @@ const alarmSound = new Audio("data:audio/wav;base64,UklGRl9vWJgVAQBXQVZFZm10IBAA
 
 // --- HELPER FUNCTIONS ---
 
+// NEW: A history of page views to enable "back" functionality
+let pageHistory = [];
+let currentPageId = 'journal-main';
+
 // Helper function to show a specific view and hide all others
 function showView(viewToShow) {
+    // Before changing the view, check if we need to save the current page to history
+    const currentView = document.getElementById(currentPageId);
+    if (currentView && viewToShow !== currentView) {
+        pageHistory.push(currentPageId);
+    }
+    
     const allViews = [main, chatContainer, studyDashboard, pomodoroPageContainer, blurtingPageContainer, calendarPageContainer, coursesPageContainer, todoContainer, calculatorContainer, tutorContainer];
     allViews.forEach(view => {
         if (view) {
             view.style.display = 'none';
         }
     });
+
     if (viewToShow) {
-        viewToShow.style.display = (viewToShow === main) ? 'flex' : 'flex'; // Changed to flex to match your new layout
+        viewToShow.style.display = (viewToShow === main) ? 'flex' : 'flex';
         if (viewToShow === main) {
             viewToShow.style.flexDirection = 'column';
         }
+        // Update the current page ID
+        currentPageId = viewToShow.id;
     }
 }
 
@@ -717,20 +729,24 @@ function initPageViews() {
 
 // --- EVENT LISTENERS ---
 
+// NEW: Updated bookToggle logic to handle page history
 bookToggle.addEventListener('click', () => {
-    const isStudySubPage = [pomodoroPageContainer, blurtingPageContainer, calendarPageContainer, coursesPageContainer, calculatorContainer, tutorContainer].some(page => page && page.style.display === 'flex');
-    if (isStudySubPage) {
-        showView(studyDashboard);
-        return;
-    }
-    const isPanelVisible = iconPanel.style.display === 'flex';
-    if (!isPanelVisible) {
+    if (iconPanel.style.display === 'flex') {
+        iconPanel.style.display = 'none';
+        iconPanel.setAttribute('aria-hidden', 'true');
+    } else if (pageHistory.length > 0) {
+        const previousPageId = pageHistory.pop();
+        const previousPage = document.getElementById(previousPageId);
+        showView(previousPage);
+        // Special case for study dashboard, it needs to be visible
+        if (previousPage === studyDashboard) {
+            studyDashboard.style.display = 'flex';
+        }
+    } else {
+        // If history is empty, show the main journal page and the icon panel
         showView(main);
         iconPanel.style.display = 'flex';
         iconPanel.setAttribute('aria-hidden', 'false');
-    } else {
-        iconPanel.style.display = 'none';
-        iconPanel.setAttribute('aria-hidden', 'true');
     }
 });
 
@@ -799,7 +815,8 @@ tutorIcon.addEventListener('click', () => {
     showView(tutorContainer);
     iconPanel.style.display = 'none';
 });
-if (calendarIcon) { // Calendar icon is in two places, so this check is important
+
+if (calendarIcon) { // Calendar icon is in one place, so this check is important
     calendarIcon.addEventListener('click', () => {
         showView(calendarPageContainer);
         renderCalendar();
@@ -816,8 +833,8 @@ if (blurtingIcon) {
         loadBlurtingContent();
     });
 }
-if (uploadIcon) { // Changed this to the new `tutorIcon` ID
-    uploadIcon.addEventListener('click', () => showView(tutorContainer));
+if (tutorIcon) {
+    tutorIcon.addEventListener('click', () => showView(tutorContainer));
 }
 if (coursesIcon) {
     coursesIcon.addEventListener('click', () => {
