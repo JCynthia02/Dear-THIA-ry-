@@ -35,6 +35,162 @@
             <i class="fa-solid fa-list-check"></i>
             <span class="icon-label">To-do</span>
         </a>
+        <a class="app-icon" id="calcIcon">
+            <i class="fa-solid fa-calculator"></i>
+            <span class="icon-label">Calculator</span>
+        </a>
+        <a class="app-icon" id="tutorIcon">
+            <i class="fa-solid fa-file-arrow-up"></i>
+            <span class="icon-label">Tutor</span>
+        </a>
+        <a class="app-icon" id="calendarIcon">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span class="icon-label">Calendar</span>
+        </a>
+        <a class="app-icon" id="resetIcon">
+            <i class="fa-solid fa-trash-can"></i>
+            <span class="icon-label">Reset</span>
+        </a>
+    </div>
+
+    <main id="journal-main">
+        <div id="journal-header">
+            <p id="journal-title">Dear THIA’ry</p>
+        </div>
+        <div id="flipbook-container">
+            <button id="prevPageBtn" title="Previous Page">&#8592;</button>
+            <div id="journal-pages">
+                </div>
+            <button id="nextPageBtn" title="Next Page">&#8594;</button>
+        </div>
+        <div id="addPageContainer">
+            <button id="addPageBtn"><i class="fa-solid fa-plus"></i> Add Page</button>
+            <button id="deletePageBtn"><i class="fa-solid fa-trash-can"></i> Delete Page</button>
+        </div>
+    </main>
+
+    <div id="chat-container" class="page-container">
+        <div id="chat-display"></div>
+        <div id="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Type your message...">
+            <button id="send-button"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <div id="todo-container" class="page-container">
+        <h2>To-do List</h2>
+        <input type="text" id="todo-input" placeholder="Add a new task...">
+        <button id="add-todo-button">Add</button>
+        <ul id="todo-list"></ul>
+    </div>
+
+    <div id="calculator-container" class="page-container">
+        <h2>Scientific Calculator</h2>
+        <div id="calculator">
+            <input type="text" id="calc-display" readonly>
+            <div id="calc-buttons">
+                </div>
+        </div>
+    </div>
+
+    <div id="study-dashboard" class="page-container">
+        <a class="app-icon" id="pomodoroIcon">
+            <i class="fa-solid fa-clock"></i>
+            <span class="icon-label">Pomodoro</span>
+        </a>
+        <a class="app-icon" id="blurtingIcon">
+            <i class="fa-solid fa-brain"></i>
+            <span class="icon-label">Blurting</span>
+        </a>
+        <a class="app-icon" id="tutorIcon"> 
+            <i class="fa-solid fa-file-arrow-up"></i>
+            <span class="icon-label">Tutor</span>
+        </a>
+        <a class="app-icon" id="calendarIcon">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span class="icon-label">Calendar</span>
+        </a>
+        <a class="app-icon" id="coursesIcon">
+            <i class="fa-solid fa-book"></i>
+            <span class="icon-label">Courses</span>
+        </a>
+    </div>
+
+    <div id="pomodoro-page-container" class="page-container">
+        <div id="pomodoro-state">Study</div>
+        <div id="pomodoro-timer">25:00</div>
+        <div id="timer-controls">
+            <button id="start-button" class="timer-button">Start</button>
+            <button id="stop-button" class="timer-button">Pause</button>
+            <button id="reset-button" class="timer-button">Reset</button>
+        </div>
+        <div id="pomodoro-settings">
+            <button id="setting-25-5" class="settings-button active">25/5</button>
+            <button id="setting-50-10" class="settings-button">50/10</button>
+        </div>
+    </div>
+
+    <div id="blurting-page-container" class="page-container">
+        <h2>Blurting</h2>
+        <div contenteditable="true" id="blurting-place" placeholder="Start blurting here..."></div>
+    </div>
+
+    <div id="tutor-container" class="page-container">
+        <h2>Tutor File Upload</h2>
+        <form id="file-upload-form">
+            <input type="file" id="file-input" multiple>
+            <select id="course-select">
+                <option value="">Select Course</option>
+                </select>
+            <button type="submit">Upload</button>
+        </form>
+        <div id="uploaded-files-section">
+            <h3>Files by Course</h3>
+            <div id="courses-files-list">
+                </div>
+        </div>
+    </div>
+
+    <div id="calendar-page-container" class="page-container">
+        <h2>Calendar</h2>
+        <div id="calendar-header">
+            <button id="prev-month-button" class="icon-button">&#10094;</button>
+            <div id="current-month-year"></div>
+            <button id="next-month-button" class="icon-button">&#10095;</button>
+        </div>
+        <div id="calendar-grid">
+            <div class="day-label">Sun</div>
+            <div class="day-label">Mon</div>
+            <div class="day-label">Tue</div>
+            <div class="day-label">Wed</div>
+            <div class="day-label">Thu</div>
+            <div class="day-label">Fri</div>
+            <div class="day-label">Sat</div>
+        </div>
+    </div>
+
+    <div id="courses-page-container" class="page-container">
+        <h2>Courses</h2>
+        <form id="course-input-form">
+            <input type="text" id="course-input" placeholder="Enter new course name...">
+            <button type="submit" id="add-course-button">Add</button>
+        </form>
+        <ul id="course-list"></ul>
+    </div>
+
+    <div id="exam-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <p id="modal-date"></p>
+            <input type="text" id="exam-input" placeholder="Enter exam name...">
+            <button id="save-exam-button">Save</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+        </a>
         <!-- NEW ICON: Scientific Calculator -->
         <a class="app-icon" id="calcIcon">
             <i class="fa-solid fa-calculator"></i>
