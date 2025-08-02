@@ -93,7 +93,9 @@
         </div>
     </div>
 
-    <div id="study-dashboard" class="page-container">
+    <<div id="study-dashboard" class="page-container">
+    <h2>Study Dashboard</h2>
+    <div class="study-icons">
         <a class="app-icon" id="pomodoroIcon">
             <i class="fa-solid fa-clock"></i>
             <span class="icon-label">Pomodoro</span>
@@ -102,50 +104,17 @@
             <i class="fa-solid fa-brain"></i>
             <span class="icon-label">Blurting</span>
         </a>
-        <a class="app-icon" id="tutorIcon"> 
-            <i class="fa-solid fa-file-arrow-up"></i>
-            <span class="icon-label">Tutor</span>
+        <a class="app-icon" id="calendarIcon">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span class="icon-label">Calendar</span>
         </a>
         <a class="app-icon" id="coursesIcon">
             <i class="fa-solid fa-book"></i>
             <span class="icon-label">Courses</span>
         </a>
     </div>
+</div>
 
-    <div id="pomodoro-page-container" class="page-container">
-        <div id="pomodoro-state">Study</div>
-        <div id="pomodoro-timer">25:00</div>
-        <div id="timer-controls">
-            <button id="start-button" class="timer-button">Start</button>
-            <button id="stop-button" class="timer-button">Pause</button>
-            <button id="reset-button" class="timer-button">Reset</button>
-        </div>
-        <div id="pomodoro-settings">
-            <button id="setting-25-5" class="settings-button active">25/5</button>
-            <button id="setting-50-10" class="settings-button">50/10</button>
-        </div>
-    </div>
-
-    <div id="blurting-page-container" class="page-container">
-        <h2>Blurting</h2>
-        <div contenteditable="true" id="blurting-place" placeholder="Start blurting here..."></div>
-    </div>
-
-    <div id="tutor-container" class="page-container">
-        <h2>Tutor File Upload</h2>
-        <form id="file-upload-form">
-            <input type="file" id="file-input" multiple>
-            <select id="course-select">
-                <option value="">Select Course</option>
-                </select>
-            <button type="submit">Upload</button>
-        </form>
-        <div id="uploaded-files-section">
-            <h3>Files by Course</h3>
-            <div id="courses-files-list">
-                </div>
-        </div>
-    </div>
 
     <div id="calendar-page-container" class="page-container">
         <h2>Calendar</h2>
