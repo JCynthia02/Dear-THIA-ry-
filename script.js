@@ -156,14 +156,11 @@ const alarmSound = new Audio("data:audio/wav;base64,UklGRl9vWJgVAQBXQVZFZm10IBAA
 let pageHistory = [];
 let currentPageId = 'journal-main';
 
-// Helper function to show a specific view and hide all others
-function showView(viewToShow) {
-    // Before changing the view, check if we need to save the current page to history
-    const currentView = document.getElementById(currentPageId);
-    if (currentView && viewToShow !== currentView) {
-        pageHistory.push(currentPageId);
-    }
+// A new function to show a page and properly manage history
+function showPage(pageId) {
+    const pageToShow = document.getElementById(pageId);
     
+    // Hide all pages
     const allViews = [main, chatContainer, studyDashboard, pomodoroPageContainer, blurtingPageContainer, calendarPageContainer, coursesPageContainer, todoContainer, calculatorContainer, tutorContainer];
     allViews.forEach(view => {
         if (view) {
@@ -171,13 +168,31 @@ function showView(viewToShow) {
         }
     });
 
-    if (viewToShow) {
-        viewToShow.style.display = (viewToShow === main) ? 'flex' : 'flex';
-        if (viewToShow === main) {
-            viewToShow.style.flexDirection = 'column';
+    // Show the requested page
+    if (pageToShow) {
+        pageToShow.style.display = (pageToShow === main) ? 'flex' : 'flex';
+        if (pageToShow === main) {
+            pageToShow.style.flexDirection = 'column';
         }
-        // Update the current page ID
-        currentPageId = viewToShow.id;
+    }
+}
+
+// A new function to handle all "forward" navigation
+function navigateTo(pageId) {
+    // Only push to history if we're not already on the page and it's not the initial state
+    if (pageId !== currentPageId) {
+        pageHistory.push(currentPageId);
+    }
+    showPage(pageId);
+    currentPageId = pageId;
+}
+
+// A new function to handle all "backward" navigation
+function goBack() {
+    if (pageHistory.length > 0) {
+        const previousPageId = pageHistory.pop();
+        showPage(previousPageId);
+        currentPageId = previousPageId;
     }
 }
 
@@ -719,32 +734,26 @@ function initializeDiaryFlipbook() {
     updateDiaryButtons();
 }
 function initPageViews() {
-    if (main) main.style.display = 'flex';
-    const pagesToHide = ['chat-container', 'study-dashboard', 'todo-container', 'calculator-container', 'tutor-container', 'calendar-page-container', 'courses-page-container'];
-    pagesToHide.forEach(id => {
-        const pageElem = document.getElementById(id);
-        if (pageElem) pageElem.style.display = 'none';
-    });
+    // Only show the main page on initial load
+    showPage('journal-main');
 }
 
 // --- EVENT LISTENERS ---
 
-// NEW: Updated bookToggle logic to handle page history
+// A new event listener for the bookToggle button
 bookToggle.addEventListener('click', () => {
+    // If the icon panel is open, close it
     if (iconPanel.style.display === 'flex') {
         iconPanel.style.display = 'none';
         iconPanel.setAttribute('aria-hidden', 'true');
-    } else if (pageHistory.length > 0) {
-        const previousPageId = pageHistory.pop();
-        const previousPage = document.getElementById(previousPageId);
-        showView(previousPage);
-        // Special case for study dashboard, it needs to be visible
-        if (previousPage === studyDashboard) {
-            studyDashboard.style.display = 'flex';
-        }
-    } else {
-        // If history is empty, show the main journal page and the icon panel
-        showView(main);
+    } 
+    // If we have a page to go back to, go back
+    else if (pageHistory.length > 0) {
+        goBack();
+    }
+    // Otherwise, show the main journal page and the icon panel
+    else {
+        navigateTo('journal-main');
         iconPanel.style.display = 'flex';
         iconPanel.setAttribute('aria-hidden', 'false');
     }
@@ -794,51 +803,51 @@ if (main) {
     });
 }
 
-// Event listeners for the icon panel
+// All navigation event listeners now use the new `MapsTo` function
 chatIcon.addEventListener('click', () => {
-    showView(chatContainer);
+    navigateTo('chat-container');
     iconPanel.style.display = 'none';
 });
 studyIcon.addEventListener('click', () => {
-    showView(studyDashboard);
+    navigateTo('study-dashboard');
     iconPanel.style.display = 'none';
 });
 todoIcon.addEventListener('click', () => {
-    showView(todoContainer);
+    navigateTo('todo-container');
     iconPanel.style.display = 'none';
+    renderTodos();
 });
 calcIcon.addEventListener('click', () => {
-    showView(calculatorContainer);
+    navigateTo('calculator-container');
     iconPanel.style.display = 'none';
+    createCalcButtons();
 });
 tutorIcon.addEventListener('click', () => {
-    showView(tutorContainer);
+    navigateTo('tutor-container');
     iconPanel.style.display = 'none';
+    populateCourseOptions();
+    renderFilesByCourse();
 });
-
-if (calendarIcon) { // Calendar icon is in one place, so this check is important
+if (calendarIcon) {
     calendarIcon.addEventListener('click', () => {
-        showView(calendarPageContainer);
+        navigateTo('calendar-page-container');
         renderCalendar();
     });
 }
 
 // Event listeners for the study dashboard sub-pages
 if (pomodoroIcon) {
-    pomodoroIcon.addEventListener('click', () => showView(pomodoroPageContainer));
+    pomodoroIcon.addEventListener('click', () => navigateTo('pomodoro-page-container'));
 }
 if (blurtingIcon) {
     blurtingIcon.addEventListener('click', () => {
-        showView(blurtingPageContainer);
+        navigateTo('blurting-page-container');
         loadBlurtingContent();
     });
 }
-if (tutorIcon) {
-    tutorIcon.addEventListener('click', () => showView(tutorContainer));
-}
 if (coursesIcon) {
     coursesIcon.addEventListener('click', () => {
-        showView(coursesPageContainer);
+        navigateTo('courses-page-container');
         renderCourses();
     });
 }
