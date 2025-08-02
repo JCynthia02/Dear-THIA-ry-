@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THIA'ry</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="pink-dreamy">
+
+    <header>
+        <button class="icon-button" id="bookToggle" title="Open menu" aria-label="Open menu">&#128214;</button>
+        <div id="greeting-container">
+            <span id="greeting-text"></span>
+        </div>
+        <button class="icon-button" id="themeToggle" title="Change theme" aria-label="Change theme">🎨</button>
+    </header>
+
+    <div id="iconPanel" aria-hidden="true">
+        <a class="app-icon" id="chatIcon">
+            <i class="fa-solid fa-comments"></i>
+            <span class="icon-label">Chat</span>
+        </a>
+        <a class="app-icon" id="studyIcon">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span class="icon-label">Study</span>
+        </a>
+        <a class="app-icon" id="todoIcon">
+            <i class="fa-solid fa-list-check"></i>
+            <span class="icon-label">To-do</span>
+        </a>
+        <a class="app-icon" id="resetIcon">
+            <i class="fa-solid fa-trash-can"></i>
+            <span class="icon-label">Reset</span>
+        </a>
+    </div>
+
+    <!-- Main Diary View -->
+    <main id="journal-main">
+        <div id="journal-header">
+            <p id="journal-title">Dear THIA’ry</p>
+        </div>
+        <div contenteditable="true" id="journal-content">
+            <p></p>
+        </div>
+    </main>
+
+    <!-- Chat View -->
+    <div id="chat-container" class="page-container">
+        <div id="chat-display"></div>
+        <div id="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Type your message...">
+            <button id="send-button"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <!-- To-do List View -->
+    <div id="todo-container" class="page-container">
+        <h2>To-do List</h2>
+        <input type="text" id="todo-input" placeholder="Add a new task...">
+        <button id="add-todo-button">Add</button>
+        <ul id="todo-list"></ul>
+    </div>
+
+    <!-- Study Dashboard View -->
+    <div id="study-dashboard" class="page-container">
+        <a class="app-icon" id="pomodoroIcon">
+            <i class="fa-solid fa-clock"></i>
+            <span class="icon-label">Pomodoro</span>
+        </a>
+        <a class="app-icon" id="blurtingIcon">
+            <i class="fa-solid fa-brain"></i>
+            <span class="icon-label">Blurting</span>
+        </a>
+        <a class="app-icon" id="uploadIcon">
+            <i class="fa-solid fa-file-arrow-up"></i>
+            <span class="icon-label">Tutor</span>
+        </a>
+        <a class="app-icon" id="calendarIcon">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span class="icon-label">Calendar</span>
+        </a>
+        <a class="app-icon" id="coursesIcon">
+            <i class="fa-solid fa-book"></i>
+            <span class="icon-label">Courses</span>
+        </a>
+    </div>
+
+    <!-- Pomodoro Timer View -->
+    <div id="pomodoro-page-container" class="page-container">
+        <div id="pomodoro-state">Study</div>
+        <div id="pomodoro-timer">25:00</div>
+        <div id="timer-controls">
+            <button id="start-button" class="timer-button">Start</button>
+            <button id="stop-button" class="timer-button">Pause</button>
+            <button id="reset-button" class="timer-button">Reset</button>
+        </div>
+        <div id="pomodoro-settings">
+            <button id="setting-25-5" class="settings-button active">25/5</button>
+            <button id="setting-50-10" class="settings-button">50/10</button>
+        </div>
+    </div>
+
+    <!-- Blurting View -->
+    <div id="blurting-page-container" class="page-container">
+        <h2>Blurting</h2>
+        <div contenteditable="true" id="blurting-place" placeholder="Start blurting here..."></div>
+    </div>
+
+    <!-- File Upload/Tutor View -->
+    <div id="file-upload-page-container" class="page-container">
+        <h2>Tutor Me</h2>
+        <div id="upload-section">
+            <input type="file" id="file-upload" multiple>
+            <label for="file-upload" id="upload-label">
+                <i class="fa-solid fa-cloud-arrow-up"></i><br>
+                <span>Drop files here or click to upload</span>
+            </label>
+        </div>
+        <div id="file-upload-placeholder">No files selected.</div>
+    </div>
+
+    <!-- Calendar View -->
+    <div id="calendar-page-container" class="page-container">
+        <h2>Calendar</h2>
+        <div id="calendar-header">
+            <button id="prev-month-button" class="icon-button">&#10094;</button>
+            <div id="current-month-year"></div>
+            <button id="next-month-button" class="icon-button">&#10095;</button>
+        </div>
+        <div id="calendar-grid">
+            <div class="day-label">Sun</div>
+            <div class="day-label">Mon</div>
+            <div class="day-label">Tue</div>
+            <div class="day-label">Wed</div>
+            <div class="day-label">Thu</div>
+            <div class="day-label">Fri</div>
+            <div class="day-label">Sat</div>
+        </div>
+    </div>
+
+    <!-- Courses View -->
+    <div id="courses-page-container" class="page-container">
+        <h2>Courses</h2>
+        <form id="course-input-form">
+            <input type="text" id="course-input" placeholder="Enter new course name...">
+            <button type="submit" id="add-course-button">Add</button>
+        </form>
+        <ul id="course-list"></ul>
+    </div>
+
+    <!-- Exam Modal -->
+    <div id="exam-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <p id="modal-date"></p>
+            <input type="text" id="exam-input" placeholder="Enter exam name...">
+            <button id="save-exam-button">Save</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
