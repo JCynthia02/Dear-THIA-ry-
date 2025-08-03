@@ -1053,3 +1053,53 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePomodoroStateDisplay();
     renderCalendar();
 });
+// ... (All of your existing JavaScript code will be here) ...
+
+// ===================================================
+// Start of the new Save functionality code
+// ===================================================
+
+const saveIcon = document.getElementById('saveIcon');
+
+saveIcon.addEventListener('click', () => {
+    // 1. Get the current HTML of the entire page
+    const pageContent = document.documentElement.outerHTML;
+
+    // 2. Fetch the content of your stylesheet (style.css)
+    fetch('style.css')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch stylesheet');
+            }
+            return response.text();
+        })
+        .then(cssContent => {
+            // 3. Find the link tag for the stylesheet in the HTML
+            const styleTag = `<link rel="stylesheet" href="style.css">`;
+            const inlineStyle = `<style>${cssContent}</style>`;
+
+            // 4. Replace the link tag with the inline style
+            const finalHtml = pageContent.replace(styleTag, inlineStyle);
+
+            // 5. Create a file-like object (Blob) from the modified HTML
+            const blob = new Blob([finalHtml], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+
+            // 6. Create a temporary link element to trigger the download
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'my_journal_backup.html'; // Suggested filename
+            document.body.appendChild(a);
+            a.click();
+
+            // 7. Clean up the temporary elements
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert('Your journal has been saved as a file!');
+        })
+        .catch(error => {
+            console.error('Error saving the page:', error);
+            alert('Could not save the page. There was an error.');
+        });
+});
