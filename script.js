@@ -42,6 +42,7 @@ const chatDisplay = document.getElementById('chat-display');
 const chatInput = document.getElementById('chat-input');
 const sendButton = document.getElementById('send-button');
 const resetIcon = document.getElementById('resetIcon');
+const saveIcon = document.getElementById('saveIcon');
 const studyIcon = document.getElementById('studyIcon');
 const todoIcon = document.getElementById('todoIcon');
 const todoContainer = document.getElementById('todo-container');
@@ -835,9 +836,20 @@ tutorIcon.addEventListener('click', () => {
 if (calendarIcon) {
     calendarIcon.addEventListener('click', () => {
         navigateTo('calendar-page-container');
+        // <-- I ADDED THIS FIX FOR THE CALENDAR ISSUE
+        iconPanel.setAttribute('aria-hidden', 'true');
+        iconPanel.classList.remove('open');
         renderCalendar();
     });
 }
+// THIS IS THE NEW CODE FOR THE SAVE BUTTON
+saveIcon.addEventListener('click', () => {
+    saveDiaryPages();
+    saveTodos(loadTodos());
+    saveCourses();
+    alert('All data saved successfully!');
+});
+
 
 // Event listeners for the study dashboard sub-pages
 if (pomodoroIcon) {
@@ -1053,52 +1065,3 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePomodoroStateDisplay();
     renderCalendar();
 });
-// New code for saving and loading multiple elements using localStorage
-
-const saveIcon = document.getElementById('saveIcon');
-
-// Identify all the elements we want to save
-const journalPages = document.getElementById('journal-pages');
-const todoList = document.getElementById('todo-list');
-const courseList = document.getElementById('course-list');
-
-// Function to save all content to the browser's memory
-const saveAllData = () => {
-    // Save the journal content
-    localStorage.setItem('journalContent', journalPages.innerHTML);
-
-    // Save the to-do list content
-    localStorage.setItem('todoListContent', todoList.innerHTML);
-
-    // Save the course list content
-    localStorage.setItem('courseListContent', courseList.innerHTML);
-
-    alert('All data saved successfully!');
-};
-
-// Function to load all content when the page first opens
-const loadAllData = () => {
-    // Load the journal content
-    const savedJournalContent = localStorage.getItem('journalContent');
-    if (savedJournalContent) {
-        journalPages.innerHTML = savedJournalContent;
-    }
-
-    // Load the to-do list content
-    const savedTodoListContent = localStorage.getItem('todoListContent');
-    if (savedTodoListContent) {
-        todoList.innerHTML = savedTodoListContent;
-    }
-
-    // Load the course list content
-    const savedCourseListContent = localStorage.getItem('courseListContent');
-    if (savedCourseListContent) {
-        courseList.innerHTML = savedCourseListContent;
-    }
-};
-
-// Add the save function to the save icon
-saveIcon.addEventListener('click', saveAllData);
-
-// Run the load function automatically when the page is opened
-window.addEventListener('load', loadAllData);
