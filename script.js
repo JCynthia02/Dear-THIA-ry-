@@ -1053,53 +1053,52 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePomodoroStateDisplay();
     renderCalendar();
 });
-// ... (All of your existing JavaScript code will be here) ...
-
-// ===================================================
-// Start of the new Save functionality code
-// ===================================================
+// New code for saving and loading multiple elements using localStorage
 
 const saveIcon = document.getElementById('saveIcon');
 
-saveIcon.addEventListener('click', () => {
-    // 1. Get the current HTML of the entire page
-    const pageContent = document.documentElement.outerHTML;
+// Identify all the elements we want to save
+const journalPages = document.getElementById('journal-pages');
+const todoList = document.getElementById('todo-list');
+const courseList = document.getElementById('course-list');
 
-    // 2. Fetch the content of your stylesheet (style.css)
-    fetch('style.css')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch stylesheet');
-            }
-            return response.text();
-        })
-        .then(cssContent => {
-            // 3. Find the link tag for the stylesheet in the HTML
-            const styleTag = `<link rel="stylesheet" href="style.css">`;
-            const inlineStyle = `<style>${cssContent}</style>`;
+// Function to save all content to the browser's memory
+const saveAllData = () => {
+    // Save the journal content
+    localStorage.setItem('journalContent', journalPages.innerHTML);
 
-            // 4. Replace the link tag with the inline style
-            const finalHtml = pageContent.replace(styleTag, inlineStyle);
+    // Save the to-do list content
+    localStorage.setItem('todoListContent', todoList.innerHTML);
 
-            // 5. Create a file-like object (Blob) from the modified HTML
-            const blob = new Blob([finalHtml], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
+    // Save the course list content
+    localStorage.setItem('courseListContent', courseList.innerHTML);
 
-            // 6. Create a temporary link element to trigger the download
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'my_journal_backup.html'; // Suggested filename
-            document.body.appendChild(a);
-            a.click();
+    alert('All data saved successfully!');
+};
 
-            // 7. Clean up the temporary elements
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+// Function to load all content when the page first opens
+const loadAllData = () => {
+    // Load the journal content
+    const savedJournalContent = localStorage.getItem('journalContent');
+    if (savedJournalContent) {
+        journalPages.innerHTML = savedJournalContent;
+    }
 
-            alert('Your journal has been saved as a file!');
-        })
-        .catch(error => {
-            console.error('Error saving the page:', error);
-            alert('Could not save the page. There was an error.');
-        });
-});
+    // Load the to-do list content
+    const savedTodoListContent = localStorage.getItem('todoListContent');
+    if (savedTodoListContent) {
+        todoList.innerHTML = savedTodoListContent;
+    }
+
+    // Load the course list content
+    const savedCourseListContent = localStorage.getItem('courseListContent');
+    if (savedCourseListContent) {
+        courseList.innerHTML = savedCourseListContent;
+    }
+};
+
+// Add the save function to the save icon
+saveIcon.addEventListener('click', saveAllData);
+
+// Run the load function automatically when the page is opened
+window.addEventListener('load', loadAllData);
