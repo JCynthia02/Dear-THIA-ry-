@@ -52,13 +52,11 @@ const studyDashboard = document.getElementById('study-dashboard');
 const pomodoroIcon = document.getElementById('pomodoroIcon');
 const blurtingIcon = document.getElementById('blurtingIcon');
 const tutorIcon = document.getElementById('tutorIcon');
-const calendarIcon = document.getElementById('calendarIcon');
 const coursesIcon = document.getElementById('coursesIcon');
 
 // New selectors for the individual study pages
 const pomodoroPageContainer = document.getElementById('pomodoro-page-container');
 const blurtingPageContainer = document.getElementById('blurting-page-container');
-const calendarPageContainer = document.getElementById('calendar-page-container');
 const coursesPageContainer = document.getElementById('courses-page-container');
 
 // Select elements for the new study view features.
